@@ -33,10 +33,39 @@ def updateLattice(lattice):
 
     return returnLat
 
+def trackGlider(lattice):
+
+    xVal = 0
+    yVal = 0
+
+    for (x, y), state in np.ndenumerate(lattice.getLattice()):
+        xVal += x * state;
+        yVal += y * state;
+
+    com = (xVal / (lattice.size()**2))
+
+    return com;
+
+def gliderOutput(lattice, counter):
+    myFile = open("gliderData.txt", "a+")
+    gliderPos = trackGlider(lattice)
+    myFile.write(str(gliderPos[0]) + " " + str(gliderPos[1]) + " " + counter)
+    myFile.close()
+
+def dummyOutput(lattice, counter):
+    pass
 
 def main():
 
     dimensions, initState, maxSweeps = getInputParams()
+
+    if (initState == "glider"):
+
+        comVals = []
+        updateFunc = gliderOutput
+
+    else:
+        updateFunc = dummyOutput;
 
     lattice = PeriodicLattice(dimensions, 8, initState)
 
@@ -48,6 +77,7 @@ def main():
     for sweep in range(maxSweeps):
         print(sweep)
         lattice = updateLattice(lattice)
+        updateFunc(lattice, sweep)
         time.sleep(0.04)
 
         # redraw plot

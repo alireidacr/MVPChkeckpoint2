@@ -1,4 +1,4 @@
-# class to represent a lattice with periodic boundary conditions
+python3# class to represent a lattice with periodic boundary conditions
 
 import numpy as np
 import random as rnd
@@ -20,6 +20,27 @@ class PeriodicLattice(object):
                 self.grid[(x,y)] = rnd.choice(choiceList)
 
         # add some more initialisation options here
+        elif (initState == "beehive"):
+            midVal = round(dimensions/2.0)
+            self.grid[(midVal, midVal)] = 1
+            self.grid[(midVal +1, midVal +1)]
+            self.grid[(midVal +1, midVal +2)]
+            self.grid[(midVal, midVal +3)];
+            self.grid[(midVal -1, midVal +2)]
+            self.grid[(midVal -1, midVal +1)]
+
+        elif (initState == "oscilator"):
+            midVal = round(dimensions/2.0)
+            for i in range(-2, 2):
+                self.grid[(midVal, midVal +i)]
+
+        elif (initState == "glider"):
+            midVal = round(dimensions/2.0)
+            self.grid[(midVal, midVal +1)] = 1
+            self.grid[(midVal, midVal -1)] = 1
+            self.grid[(midVal +1, midVal)] = 1
+            self.grid[(midVal +1, midVal -1)] = 1
+            self.grid[(midVal -1, midVal -1)] = 1
 
     def __getitem__(self, pos):
         return self.grid[pos]
